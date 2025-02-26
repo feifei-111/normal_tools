@@ -1,6 +1,6 @@
 # Shell prompt
-source ~/bash_setup/git-tools/git-prompt.sh # defined __git_ps1
-source ~/bash_setup/git-tools/git-completion.sh
+source ~/bash_setup_scripts/git-tools/git-prompt.sh # defined __git_ps1
+source ~/bash_setup_scripts/git-tools/git-completion.sh
 
 # Shell prompt
 export CLICOLOR="1"

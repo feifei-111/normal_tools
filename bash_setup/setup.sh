@@ -1,19 +1,37 @@
-ENV_PATH=$1
-SETUP_PATH=$PWD
+#!/bin/bash
 
-mkdir download && cd download
-wget https://docs.anaconda.com/miniconda/#miniconda-latest-installer-links
-wget https://developer.nvidia.com/nsight-systems/get-started#Linuxx86  # can nsys be installed only with one command line?
-cd ..
+SHOW_HOST=false
+if [[ "$1" == "host" ]]; then
+    SHOW_HOST=true
+fi
 
-cd $ENV_PATH
-bash $SETUP_PATH/download/Miniconda3-latest-Linux-x86_64.sh -b -u -p ./
-$ENV_PATH/miniconda3/bin/conda init
-mkdir $ENV_PATH/mylocal && cd $ENV_PATH/mylocal && mkdir bin
-echo "export PATH=$ENV_PATH/bin:$PATH" >> $SETUP_PATH/bashrc_settings.sh
+if [[ "$SHELL" == */zsh ]]; then
+    RC_FILE=~/.zshrc
+else
+    RC_FILE=~/.bashrc
+fi
 
-cd $SETUP_PATH
 cp -r bash_setup_scripts ~
-cat bashrc_settings.sh >> ~/.bashrc
 
-source ~/.bashrc
+# 删除旧配置
+if grep -q "bash setup config by wzf" "$RC_FILE" 2>/dev/null; then
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i '' '/bash setup config by wzf/,/end of bash setup config by wzf/d' "$RC_FILE"
+    else
+        sed -i '/bash setup config by wzf/,/end of bash setup config by wzf/d' "$RC_FILE"
+    fi
+fi
+
+echo "##==============================bash setup config by wzf==============================================" >> $RC_FILE
+
+if [[ "$SHOW_HOST" == true ]]; then
+    echo "export PS1_SHOW_HOST=1" >> $RC_FILE
+else
+    echo "unset PS1_SHOW_HOST" >> $RC_FILE
+fi
+
+cat bashrc_settings.sh >> $RC_FILE
+
+echo "#==============================end of bash setup config by wzf==============================================" >> $RC_FILE
+
+echo "配置完成，请重新打开终端或执行: source $RC_FILE"

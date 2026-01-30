@@ -24,25 +24,30 @@ if [ -n "$ZSH_VERSION" ]; then
     else
         HOST_PREFIX=""
     fi
-    export PROMPT='${HOST_PREFIX}${YELLOW}λ ${GREEN}%~${YELLOW}${vcs_info_msg_0_} ${YELLOW}>${NO_COLOR} '
+    export PROMPT='%B${HOST_PREFIX}${YELLOW}λ ${GREEN}%~${YELLOW}${vcs_info_msg_0_} ${YELLOW}>${NO_COLOR}%b '
 else
     # bash
     source ~/bash_setup_scripts/git-tools/git-prompt.sh
     source ~/bash_setup_scripts/git-tools/git-completion.sh
     
-    YELLOW="\[\033[1;33m\]"
-    NO_COLOR="\[\033[0m\]"
-    GREEN="\[\033[1;32m\]"
-    WHITE="\[\033[1;37m\]"
-    BLUE="\[\033[1;34m\]"
-    CYAN="\[\033[36;1m\]"
-    RED="\[\033[31;1m\]"
+    # 样式
+    BOLD="\[\033[1m\]"
+    UNBOLD="\[\033[22m\]"
+    RESET_ALL="\[\033[0m\]"
+    
+    # 颜色
+    YELLOW="\[\033[33m\]"
+    GREEN="\[\033[32m\]"
+    WHITE="\[\033[37m\]"
+    BLUE="\[\033[34m\]"
+    CYAN="\[\033[36m\]"
+    RED="\[\033[31m\]"
     MAGENTA="\[\033[35m\]"
     
     if [ -n "$PS1_SHOW_HOST" ]; then
-        HOST_PREFIX="\[\033[1;34m\]\h "
+        HOST_PREFIX="$BOLD$BLUE\h "
     else
         HOST_PREFIX=""
     fi
-    export PS1="$HOST_PREFIX$YELLOWλ $GREEN\w$YELLOW\$(__git_ps1 \" \[\033[35m\]{\[\033[36m\]%s\[\033[35m\]}\") $YELLOW>$NO_COLOR "
+    export PS1="$HOST_PREFIX$BOLD$YELLOWλ $GREEN\w$YELLOW\$(__git_ps1 \" $MAGENTA{$CYAN%s$MAGENTA}\") $YELLOW>$RESET_ALL "
 fi
